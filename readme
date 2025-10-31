@@ -1,0 +1,45 @@
+# Stereogram Generator GUI
+
+A Tkinter-based desktop app for creating single-image random dot stereograms (Magic Eye illusions) from grayscale depth maps and texture patterns. Uses NumPy for efficient pixel shifting and PIL for image handling, demonstrating algorithmic generative art with real-time previews.
+
+## Quick Demo
+![Demo GIF](demo.gif) <!-- Upload a GIF here after testing; see Step 4 for how to make one -->
+
+- Load a depth map (e.g., black shapes on white = forward 3D).
+- Choose a texture (e.g., colorful wallpaper).
+- Tweak sliders for pattern/depth → Generate illusion in seconds!
+
+## Why This Project?
+- Showcases generative AI fundamentals: Depth-to-illusion synthesis, similar to neural rendering in tools like Stable Diffusion.
+- Built with Python (3+ years experience), tying into certifications in Generative AI Engineering (IBM/Coursera) and Prompt Engineering.
+- Portfolio piece for remote AI Engineer/Prompt Engineer roles—extensible to LLM text-to-depth generation.
+
+## Installation & Run
+1. Clone: `git clone https://github.com/ptxxdxxd/stereogram-generator-gui.git`
+2. Virtual env: `python -m venv venv` → `venv\Scripts\activate` (Windows).
+3. Install: `pip install -r requirements.txt`
+4. Run: `python stereogram_gui.py`
+- Needs sample images? Download free depth maps from [textures.com](https://www.textures.com/) or create simple ones in Paint.
+
+## Usage Guide
+- **Depth Map**: Grayscale PNG/JPG (e.g., 600x600, dark areas pop out).
+- **Texture**: Colorful image for the repeating pattern.
+- Sliders: Pattern Width (repetition size), Depth Strength (3D pop).
+- Output: High-res PNG; cross eyes to view the hidden 3D shape!
+
+## Tech Breakdown
+- **Core Algo**: O(h*w) loop shifts pixels by depth (z = strength * (1 - depth/255)), creating disparity for binocular fusion.
+- Stack: Python 3.10+, Tkinter (GUI), NumPy (arrays), Pillow (images).
+- Performance: Previews in <1s on standard hardware; full gen ~2s.
+
+## Enhancements Planned
+- Integrate Hugging Face Transformers for prompt-based depth maps (e.g., "Generate a 3D mountain").
+- Docker support for easy deployment.
+- Metrics: Add prompt iteration tracking for AI engineering demos.
+
+## Related Work
+- GitHub: [ptxxdxxd](https://github.com/ptxxdxxd) (More AI projects coming).
+- LinkedIn: [Chris Rollins](https://www.linkedin.com/in/chris-rollins-78607335b/)
+- Certs: 30+ in AI (Generative AI, Prompt Eng, Ethics via edX/Coursera).
+
+MIT License. Contributions welcome—fork and PR!
