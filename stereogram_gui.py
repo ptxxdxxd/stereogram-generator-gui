@@ -23,9 +23,10 @@ def stereogram_from_depth_texture(depth_map, texture_img, pattern_width=80, dept
 def load_and_resize(path, max_dim=600):
     img = Image.open(path)
     img = ImageOps.grayscale(img)
-    aspect = img.width / img.height
-    w = min(max_dim, img.width)
-    h = int(w / aspect) if aspect > 1 else min(max_dim, img.height)
+    # Shrink so the longer side is at most max_dim, keeping the aspect ratio
+    scale = min(1.0, max_dim / max(img.width, img.height))
+    w = max(1, round(img.width * scale))
+    h = max(1, round(img.height * scale))
     img = img.resize((w, h), Image.LANCZOS)
     arr = np.array(img)
     # Auto-invert if mostly white (to help user error)
