@@ -1,41 +1,13 @@
-import numpy as np
-from PIL import Image, ImageTk, ImageOps
+from PIL import Image, ImageTk
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
-def stereogram_from_depth_texture(depth_map, texture_img, pattern_width=80, depth_strength=20):
-    h, w = depth_map.shape
-    texture_img = texture_img.resize((w, h), Image.LANCZOS)
-    texture = np.array(texture_img.convert('RGB'))
-    sgram = np.zeros_like(texture)
-    for y in range(h):
-        indices = np.arange(w)
-        for x in range(pattern_width, w):
-            z = int(depth_strength * (1.0 - depth_map[y, x] / 255.0))
-            left = x - pattern_width
-            if left - z >= 0:
-                indices[x] = indices[left - z]
-        sgram[y, :pattern_width] = texture[y, :pattern_width]
-        for x in range(pattern_width, w):
-            sgram[y, x] = sgram[y, indices[x]]
-    return Image.fromarray(sgram)
+from stereogram_core import (
+    load_and_resize,
+    load_and_resize_texture,
+    stereogram_from_depth_texture,
+)
 
-def load_and_resize(path, max_dim=600):
-    img = Image.open(path)
-    img = ImageOps.grayscale(img)
-    aspect = img.width / img.height
-    w = min(max_dim, img.width)
-    h = int(w / aspect) if aspect > 1 else min(max_dim, img.height)
-    img = img.resize((w, h), Image.LANCZOS)
-    arr = np.array(img)
-    # Auto-invert if mostly white (to help user error)
-    if np.mean(arr) > 200: arr = 255 - arr
-    return arr
-
-def load_and_resize_texture(path, width, height):
-    img = Image.open(path)
-    img = img.convert('RGB').resize((width, height), Image.LANCZOS)
-    return img
 
 def update_preview():
     global depth_map, texture_img, current_sgram
